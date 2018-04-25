@@ -1,17 +1,26 @@
-import React from 'react';
-import { Text, View, Button } from 'react-native';
+import React, { Component } from 'react';
+import { Text, View, Button, AppRegistry, StyleSheet, TouchableOpacity, Linking, } from 'react-native';
 import { TabNavigator, TabBarBottom, StackNavigator} from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 
 class ScanScreen extends React.Component {
   static navigationOptions = {
     title: 'Scan',
   }
+  onSuccess(e) {
+    alert("Hallo");
+  }
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Hello Icerefrixi!</Text>
-      </View>
+      <QRCodeScanner
+        onRead={this.onSuccess.bind(this)}
+        topContent={
+          <Text style={styles.centerText}>
+            Please scan QR code of the box.
+          </Text>
+        }
+      />
     );
   }
 }
@@ -82,6 +91,24 @@ const tab = TabNavigator(
  }
 );
 
+const styles = StyleSheet.create({
+  centerText: {
+    flex: 1,
+    fontSize: 18,
+    padding: 32,
+    color: '#777',
+  },
+  textBold: {
+    fontWeight: '500',
+    color: '#000',
+  },
+  buttonText: {
+    fontSize: 21,
+    color: 'rgb(0,122,255)',
+  },
+});
+
+//TabNavigator inside of StackNavigator
 export default StackNavigator({
    MyTab: {
      screen: tab,

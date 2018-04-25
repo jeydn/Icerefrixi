@@ -8,8 +8,13 @@
     "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/Icerefrixi/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'"
   },
   "dependencies": {
+    "eslint": "^4.19.1",
+    "eslint-plugin-react": "^7.7.0",
+    "eslint-plugin-react-native": "^3.2.1",
     "react": "16.3.1",
     "react-native": "0.55.3",
+    "react-native-camera": "^1.1.2",
+    "react-native-qrcode-scanner": "^1.0.1",
     "react-native-vector-icons": "^4.6.0",
     "react-navigation": "^1.5.11"
   },
