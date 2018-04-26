@@ -9,7 +9,8 @@ class ScanScreen extends React.Component {
     title: 'Scan',
   }
   onSuccess(e) {
-    alert("Hallo");
+    this.props.navigation.navigate('Details', {boxId: e.data});
+    this.forceUpdate();
   }
   render() {
     return (
@@ -44,7 +45,7 @@ class DetailsScreen extends React.Component {
     const { params } = navigation.state;
 
     return {
-      title: params ? params.otherParam : 'Unnamed Box',
+      title: params ? params.boxId + ' Box' : 'Unnamed Box',
     }
   };
   render() {
