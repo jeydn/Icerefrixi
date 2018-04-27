@@ -8,7 +8,7 @@ class ScanScreen extends React.Component {
   }
   onSuccess(e) {
     this.props.navigation.navigate('Details', {boxId: e.data});
-    this.scanner.reactivate();
+  //  this.scanner.reactivate();
   }
 
   render() {

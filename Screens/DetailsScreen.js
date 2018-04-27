@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { VictoryScatter, VictoryChart, VictoryTheme, VictoryLine } from "victory-native";
+import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import { Badge } from 'react-native-elements';
+import { VictoryScatter, VictoryChart, VictoryTheme, VictoryLine, VictoryAxis } from "victory-native";
 import Data from '../Ressources/Data.json';
-/*
-const data = [
-  { quarter: 1, earnings: 13000 },
-  { quarter: 2, earnings: 16500 },
-  { quarter: 3, earnings: 14250 },
-  { quarter: 4, earnings: 19000 }
-];
-*/
 
 class DetailsScreen extends Component {
   static data = null;
@@ -18,7 +11,8 @@ class DetailsScreen extends Component {
     super(props);
     this.state = {
       boxId: null,
-      data: null
+      data: null,
+      boxOpenings: null
     };
 
     this.setBoxParams = this.setBoxParams.bind(this)
@@ -29,21 +23,30 @@ class DetailsScreen extends Component {
     const { params } = navigation.state;
     return {
       title: params ? params.boxId + ' Box' : 'No box selected',
-
     }
   };
 
   setBoxParams(boxId){
     if(boxId){
-      this.setState({boxId:boxId, data:Data[boxId]});
+      this.setState({boxId:boxId, data:Data[boxId], boxOpenings:Data[boxId].Openings});
     }else{
-      this.setState({boxId:"S100033", data:Data["S100033"].Temp});
+      //TODO: Just for devlopment
+      this.setState({boxId:"S100033", data:Data["S100033"].Temp, boxOpenings:Data["S100033"].Openings});
     }
-    alert(JSON.stringify(Data["S100033"].Temp));
   }
 
   componentWillMount() {
     this.setBoxParams(this.title);
+  }
+
+  formatDate(timestamp){
+      const date = new Date(timestamp);
+      let minutes =  date.getMinutes();
+      if(minutes === 0){
+        minutes = "00";
+      }
+
+      return date.getHours() + ":" + minutes;
   }
   /*
   }
@@ -71,14 +74,33 @@ class DetailsScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <View style={styles.infoView}>
+          <Text style={styles.infoText}>Temperature inside the box</Text>
+        </View>
+
         <VictoryChart theme={VictoryTheme.material}>
           <VictoryLine
+            interpolation="natural"
             style={{
-              data: { stroke: "#004880" },
+              data: { stroke: "#2E4761" },
               parent: { border: "1px solid #ccc"}
             }}
-            data={this.state.data}/>
+            data={this.state.data}
+            x="x"
+            y="y"
+          />
+          <VictoryAxis
+              tickFormat={(x) => this.formatDate(x)}
+            />
+        <VictoryAxis dependentAxis />
         </VictoryChart>
+
+        <View style={styles.infoViewBadge}>
+          <Text style={styles.infoText}>Box openings</Text>
+          <Badge containerStyle={{ backgroundColor: '#2E4761', marginRight: 32}}>
+            <Text style={styles.badgeText}>{this.state.boxOpenings}</Text>
+          </Badge>
+        </View>
      </View>
     );
   }
@@ -89,8 +111,34 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5fcff"
-  }
+    backgroundColor: "#FFFFFF"
+  },
+  infoView: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: "#EFEFF4",
+    width: Dimensions.get('window').width,
+  },
+  infoText: {
+    flex: 1,
+    fontSize: 18,
+    padding: 32,
+    color: '#777'
+  },
+  badgeText: {
+    fontSize: 25,
+    color: '#FFFFFF',
+    padding: 15,
+  },
+  infoViewBadge: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: "#EFEFF4",
+    width: Dimensions.get('window').width,
+  },
 });
 
 export default DetailsScreen;
