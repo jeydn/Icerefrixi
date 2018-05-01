@@ -6,6 +6,10 @@ import DetailsScreen from './screens/DetailsScreen.js';
 import ScanScreen from './screens/ScanScreen.js';
 import BoxesScreen from './screens/BoxesScreen.js';
 
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {ActionCreators} from "./actions";
+
 const tab = TabNavigator(
  {
    Scan: { screen: ScanScreen },
@@ -41,7 +45,7 @@ const tab = TabNavigator(
 );
 
 //TabNavigator inside of StackNavigator
-export default StackNavigator({
+const IceFrixTabNav = StackNavigator({
    MyTab: {
      screen: tab,
      navigationOptions: {
@@ -55,3 +59,8 @@ export default StackNavigator({
     },
   }
 })
+
+function mapDispatchToPros(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
+export default connect((state) => {return {...state}}, mapDispatchToPros)(IceFrixTabNav);

@@ -1,5 +1,6 @@
+import createReducer from "./createReducer";
 import * as types from "../actions/types";
-
+/*
 const initialState = {
   "Boxes": [
     {
@@ -55,4 +56,49 @@ const boxes = (state = initialState, action) => {
   }
 }
 
-export default boxes
+*/
+export const list = createReducer([], {
+
+    [types.ADD_ITEM](state, action) {
+      return [...state, {
+          Boxes: [
+            ...state.Boxes,
+            {
+              "Name" : action.Name,
+              "Temp" : action.Temp,
+              "Openings": action.Openings,
+              "Archived": action.Archived,
+              "LastUpdated": new Date().getTime() //actual timestamp
+            }
+          ]
+        }
+      ]
+    },
+
+    [types.GET_ITEM](state, action) {
+      return [...state, {
+          Boxes: state.Boxes.map((box, boxId) => {
+            if (box.Name === boxId) {
+              return Object.assign({}, box, {})
+            }
+            return box
+          })
+        }
+      ]
+    },
+
+    [types.ARCHIVE_ITEM](state, action) {
+      return [...state, {
+          Boxes: state.Boxes.map((box, boxId) => {
+            if (box.Name === boxId) {
+              return Object.assign({}, box, {
+                Archived: true //Set archived to true
+              })
+            }
+            return box
+          })
+        }
+      ]
+    }
+
+});

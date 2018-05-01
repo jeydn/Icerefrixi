@@ -4,9 +4,11 @@ import {Provider} from "react-redux";
 import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import {autoRehydrate, persistStore} from "redux-persist";
 import IceFrixTabNav from "./IceFrixTabNav";
-import {boxes} from "./reducers";
+import {listReducer} from "./reducers";
 import {createLogger} from "redux-logger";
 import thunk from "redux-thunk";
+
+const logger = createLogger({predicate: (getState, action) => __DEV__});
 
 export default class App extends React.Component {
 
@@ -20,15 +22,12 @@ export default class App extends React.Component {
 
 
     componentWillMount() {
-        let reducer = boxes;
-        /*combineReducers({
-            ...iceFrixApp,
-        }); */
+        let reducer = combineReducers({
+            ...listReducer,
+        });
 
-        let store = createStore(reducer, {}, compose(applyMiddleware(logger, thunk), autoRehydrate({log: true})));
-        let persistor = persistStore(store, {
-            storage: AsyncStorage,
-        }, () => this.setState({isLoading: false}));
+        let store = createStore(reducer, {}, compose(applyMiddleware(logger, thunk)));//, autoRehydrate({log: true})));
+        let persistor = persistStore(store, null, () => this.setState({isLoading: false}));
 
 
         this.setState({store, persistor});
