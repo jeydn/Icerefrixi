@@ -1,57 +1,51 @@
-import React, { Component } from 'react';
-import { Text, View, Button, AppRegistry, StyleSheet } from 'react-native';
-import { TabNavigator, TabBarBottom, StackNavigator} from 'react-navigation';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import DetailsScreen from './screens/DetailsScreen.js';
-import ScanScreen from './screens/ScanScreen.js';
-import BoxesScreen from './screens/BoxesScreen.js';
+import React from "react";
+import {AsyncStorage} from "react-native";
+import {Provider} from "react-redux";
+import {applyMiddleware, combineReducers, compose, createStore} from "redux";
+import {autoRehydrate, persistStore} from "redux-persist";
+import IceFrixTabNav from "./IceFrixTabNav";
+import {boxes} from "./reducers";
+import {createLogger} from "redux-logger";
+import thunk from "redux-thunk";
 
-const tab = TabNavigator(
- {
-   Scan: { screen: ScanScreen },
-   Boxes: { screen: BoxesScreen },
-   Details: { screen: DetailsScreen },
- },
- {
-   navigationOptions: ({ navigation }) => ({
-     tabBarIcon: ({ focused, tintColor }) => {
-       const { routeName } = navigation.state;
-       let iconName;
-       if (routeName === 'Scan') {
-         iconName = `ios-qr-scanner${focused ? '' : '-outline'}`;
-       } else if (routeName === 'Boxes') {
-         iconName = `ios-cube${focused ? '' : '-outline'}`;
-       } else if (routeName === 'Details') {
-         iconName = `ios-list-box${focused ? '' : '-outline'}`;
-       }
+export default class App extends React.Component {
 
-       return <Ionicons name={iconName} size={25} color={tintColor} />;
-     },
-   }),
+    constructor() {
+        super();
+        this.state = {
+            store: null,
+            isLoading: true,
+        };
+    }
 
-   tabBarOptions: {
-     activeTintColor: '#004880',
-     inactiveTintColor: 'gray',
-   },
-   tabBarComponent: TabBarBottom,
-   tabBarPosition: 'bottom',
-   animationEnabled: false,
-   swipeEnabled: true,
- }
-);
 
-//TabNavigator inside of StackNavigator
-export default StackNavigator({
-   MyTab: {
-     screen: tab,
-     navigationOptions: {
-       headerStyle: {
-        backgroundColor: '#2E4761',
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-    },
-  }
-})
+    componentWillMount() {
+        let reducer = boxes;
+        /*combineReducers({
+            ...iceFrixApp,
+        }); */
+
+        let store = createStore(reducer, {}, compose(applyMiddleware(logger, thunk), autoRehydrate({log: true})));
+        let persistor = persistStore(store, {
+            storage: AsyncStorage,
+        }, () => this.setState({isLoading: false}));
+
+
+        this.setState({store, persistor});
+
+    }
+
+    render() {
+
+        if (this.state.isLoading) {
+            return null;
+        }
+
+
+        return (
+            <Provider store={this.state.store} persistor={this.state.persistor}>
+                <IceFrixTabNav />
+            </Provider>
+        );
+    }
+};

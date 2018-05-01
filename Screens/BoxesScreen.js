@@ -1,75 +1,78 @@
-import React, { Component } from 'react';
-import  { Text, View, FlatList, StyleSheet, TouchableHighlight } from 'react-native';
 
-class BoxesScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Box List',
-  }
+import React, {Component} from "react";
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
-  props: {
-       list: []
-   };
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {ActionCreators} from "../actions/index";
 
-   constructor(props) {
-       super(props);
-   }
-   render() {
-       return (
-           <View style={styles.container}>
-           </View>
-       );
-   }
- }
+class BoxesScreen extends Component {
+    props: {
+        list: []
+    };
 
-  /* componentDidMount() {
-       this.props.navigation.setParams({deleteAllItems: this.props.deleteAllItems});
-   }
+    constructor(props) {
+        super(props);
+    }
 
-   render() {
-       return (
-           <View style={styles.container}>
-               <FlatList
-                   data={this.props.list.map(i => {
-                       return {key: i.color, ...i}
-                   })}
-                   renderItem={this.renderItem}
-               />
-           </View>
-       );
-   }
+    static navigationOptions = {
+      title: 'Box List',
+    }
 
-   renderItem({item}) {
-       return (
-           <View style={styles.listItem}>
-               <Text style={{width: 80}}>{item.key}</Text>
-               <View style={[styles.colorPreview, {backgroundColor: item.color}]}/>
-           </View>
-       )
-   }
+    render() {
 
-   static navigationOptions = ({ navigation }) => ({
-               title: "All Colors",
-               headerRight:
-                   <TouchableOpacity onPress={() =>{navigation.state.params.deleteAllItems()}}>
-                       <Ionicons
-                           name={'ios-trash-outline'}
-                           size={26}
-                           style={{color: "red", marginRight: 10}}
-                       />
-                   </TouchableOpacity>
-   })
+        return (
+            <View style={styles.container}>
+                <FlatList
+                    data={this.props.list.map(i => {
+                        return {key: i.color, ...i}
+                    })}
+                    renderItem={this.renderItem}
+                />
+            </View>
+        );
+    }
+
+    renderItem({item}) {
+        return (
+            <View style={styles.listItem}>
+                <Text style={{width: 80}}>{item.key}</Text>
+                <View style={[styles.colorPreview, {backgroundColor: item.color}]}/>
+            </View>
+        )
+    }
 }
-*/
-const styles = StyleSheet.create({
-  container: {
-   flex: 1,
-   paddingTop: 22
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
-})
 
-export default BoxesScreen;
+const styles = StyleSheet.create({
+
+    container: {
+
+        flex: 1,
+        paddingTop: 5
+    },
+
+    listItem: {
+        height: 35,
+        flexDirection: "row",
+        backgroundColor: "white",
+        marginBottom: 5,
+        elevation: 2,
+        alignItems: "center",
+        padding: 5
+    },
+
+    colorPreview: {
+        height: 20,
+        width: 20,
+    }
+});
+
+function mapStateToProps(state) {
+    return {
+        boxes: state.boxes,
+    }
+}
+function mapDispatchToPros(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
+export default connect(mapStateToProps, mapDispatchToPros)(BoxesScreen);

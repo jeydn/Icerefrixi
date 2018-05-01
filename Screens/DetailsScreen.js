@@ -4,6 +4,9 @@ import { Badge } from 'react-native-elements';
 import { VictoryScatter, VictoryChart, VictoryTheme, VictoryLine, VictoryAxis } from "victory-native";
 import Data from '../ressources/Data.json';
 
+import { connect } from 'react-redux';
+
+
 const noBoxSelected = "No box selected";
 
 class DetailsScreen extends Component {
@@ -28,33 +31,52 @@ class DetailsScreen extends Component {
   };
 
   setBoxParams(boxId){
-      var data;
-      alert("Data.Boxes = " +JSON.stringify(Data.Boxes));
-      alert("data length = " + Data.Boxes.length);
+      let data;
+      let BreakException = {};
 
-      for (let j=0; j<2; j++){
-        alert("I bims");
+      const boxes = Data.Boxes;
+    /*  var BreakException = {};
+
+      try {
+        [1, 2, 3].forEach(function(el) {
+          console.log(el);
+          if (el === 2) throw BreakException;
+        });
+      } catch (e) {
+        if (e !== BreakException) throw e;
       }
 
-      for (let i = 0; i < Data.Boxes.length; i++){
-        alert("blubb");
-        alert("boxId = " + JSON.stringify(boxId));
-        alert("Name = " + JSON.stringify(Data.Boxes[i].Name));
-        if(Data.Boxes[i].Name === boxId){
-          alert(Data.Boxes[i].Name + " = "+ JSON.stringify(Data.Boxes[i]));
-          data = Data.Boxes[i];
-          break;
-        }
+
+      if(obj.Name === boxId){
+        alert(obj.Name + " = "+ JSON.stringify(obj));
+        data = obj;
       }
 
-      alert(JSON.stringify(data));
+      Data.Boxes.forEach(obj => alert(JSON.stringify(obj)));
+*/
+      try{
+        boxes.forEach((obj,boxId) => {
+            if(obj.Name === boxId){
+            data = obj;
+            throw BreakException;
+          }
+        });
+      }catch (e){
+        //Do nothing
+      }
+
 
       this.setState({boxId:boxId, data:data.Temp, boxOpenings:data.Openings});
   }
 
   componentWillMount() {
     const { params } = this.props.navigation.state;
-    const boxId =  params ? params.boxId : noBoxSelected;
+    var boxId =  params ? params.boxId : noBoxSelected;
+
+    //TODO: ONLY FOR DEVELOPMENT! HAS TO BE DELETED
+    if(boxId === noBoxSelected){
+      boxId = "S100033"
+    }
     this.setBoxParams(boxId);
   }
 

@@ -7,6 +7,13 @@ export function addItem(item){
   }
 }
 
+export function getItem(boxId){
+  return {
+    type: types.GET_ITEM,
+    boxId
+  }
+}
+
 export function archiveItem(index){
   return {
     type: types.ARCHIVE_ITEM,
