@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Text, View, Button, AppRegistry, StyleSheet } from 'react-native';
 import { TabNavigator, TabBarBottom, StackNavigator} from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import DetailsScreen from './Screens/DetailsScreen.js';
-import ScanScreen from './Screens/ScanScreen.js';
-import BoxesScreen from './Screens/BoxesScreen.js';
+import DetailsScreen from './screens/DetailsScreen.js';
+import ScanScreen from './screens/ScanScreen.js';
+import BoxesScreen from './screens/BoxesScreen.js';
 
 const tab = TabNavigator(
  {

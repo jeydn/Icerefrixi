@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { VictoryScatter, VictoryChart, VictoryTheme, VictoryLine, VictoryAxis } from "victory-native";
-import Data from '../Ressources/Data.json';
+import Data from '../ressources/Data.json';
+
+const noBoxSelected = "No box selected";
 
 class DetailsScreen extends Component {
-  static data = null;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -15,28 +15,80 @@ class DetailsScreen extends Component {
       boxOpenings: null
     };
 
-    this.setBoxParams = this.setBoxParams.bind(this)
+    this.setBoxParams = this.setBoxParams.bind(this);
   }
 
   //Title includes name of box
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
+
     return {
-      title: params ? params.boxId + ' Box' : 'No box selected',
+      title: params ? params.boxId : noBoxSelected,
     }
   };
 
   setBoxParams(boxId){
-    if(boxId){
-      this.setState({boxId:boxId, data:Data[boxId], boxOpenings:Data[boxId].Openings});
-    }else{
-      //TODO: Just for devlopment
-      this.setState({boxId:"S100033", data:Data["S100033"].Temp, boxOpenings:Data["S100033"].Openings});
-    }
+      var data;
+      alert("Data.Boxes = " +JSON.stringify(Data.Boxes));
+      alert("data length = " + Data.Boxes.length);
+
+      for (let j=0; j<2; j++){
+        alert("I bims");
+      }
+
+      for (let i = 0; i < Data.Boxes.length; i++){
+        alert("blubb");
+        alert("boxId = " + JSON.stringify(boxId));
+        alert("Name = " + JSON.stringify(Data.Boxes[i].Name));
+        if(Data.Boxes[i].Name === boxId){
+          alert(Data.Boxes[i].Name + " = "+ JSON.stringify(Data.Boxes[i]));
+          data = Data.Boxes[i];
+          break;
+        }
+      }
+
+      alert(JSON.stringify(data));
+
+      this.setState({boxId:boxId, data:data.Temp, boxOpenings:data.Openings});
   }
 
   componentWillMount() {
-    this.setBoxParams(this.title);
+    const { params } = this.props.navigation.state;
+    const boxId =  params ? params.boxId : noBoxSelected;
+    this.setBoxParams(boxId);
+  }
+
+
+  /*
+componentWillMount() {
+  const { params } = this.props.navigation.state;
+  const boxId =  params ? params.boxId : noBoxSelected;
+
+  this.setBoxParams(boxId);
+}
+
+
+  componentWillMount() {
+    /*alert(JSON.stringify(this.props.navigation));
+
+    if(this.props.navigation.params){
+      alert(JSON.stringify(this.props.navigation.params[0].boxId));
+      aler("I bims");
+      this.setBoxParams(this.props.navigation.params[0].boxId);
+    }else{
+      //TODO: Just for devlopment
+     this.setState({boxId:"S100033", data:Data.Boxes[0].Temp, boxOpenings:Data.Boxes[0].Openings});
+   }
+     if(this.props.navigation.params){
+     alert(JSON.stringify(this.props.navigation.params));
+     this.setBoxParams(this.props.navigation.params["boxId"]);
+   }
+  }
+
+  componentWillUpdate() {
+    alert(JSON.stringify(this.props.navigation.params));
+  //  alert(JSON.stringify(this.props.navigation.params.boxId));
+    this.setBoxParams(this.props.navigation.params);
   }
 
   formatDate(timestamp){
@@ -48,7 +100,7 @@ class DetailsScreen extends Component {
 
       return date.getHours() + ":" + minutes;
   }
-  /*
+
   }
 
   static navigatorStyle = {
@@ -72,6 +124,10 @@ class DetailsScreen extends Component {
   */
 
   render() {
+  /*  const { params } = this.props.navigation.state;
+    const boxId =  params ? params.boxId : noBoxSelected;
+    this.setBoxParams(boxId);
+*/
     return (
       <View style={styles.container}>
         <View style={styles.infoView}>
@@ -86,8 +142,8 @@ class DetailsScreen extends Component {
               parent: { border: "1px solid #ccc"}
             }}
             data={this.state.data}
-            x="x"
-            y="y"
+            x="Time"
+            y="Temperature"
           />
           <VictoryAxis
               tickFormat={(x) => this.formatDate(x)}

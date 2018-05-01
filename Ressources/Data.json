@@ -1,47 +1,72 @@
 {
-  "S100033": {
-    "Temp": [{
-        "x": 1524830400000,
-        "y": 3
-      },
-      {
-        "x": 1524832200000,
-        "y": 6
-      },
-      {
-        "x": 1524834000000,
-        "y": 8
-      },
-      {
-        "x": 1524835800000,
-        "y": 10
-      },
-    ],
-    "Openings": 3,
-    "Archived": false,
-    "LastUpdated": "1524835800",
-  },
-  "M100203": {
-    "Temp": {
-      "1524830400": 3,
-      "1524832200": 6,
-      "1524834000": 8,
-      "1524835800": 10,
+  "Boxes": [{
+      "Name": "S100033",
+      "Temp": [{
+          "Time": 1524830400000,
+          "Temperature": 3
+        },
+        {
+          "Time": 1524832200000,
+          "Temperature": 6
+        },
+        {
+          "Time": 1524834000000,
+          "Temperature": 8
+        },
+        {
+          "Time": 1524835800000,
+          "Temperature": 10
+        },
+      ],
+      "Openings": 3,
+      "Archived": false,
+      "LastUpdated": "1524835800",
     },
-    "Openings": 5,
-    "Archived": false,
-    "LastUpdated": "1524835800",
-  },
-  "B100001": {
-    "Temp": {
-      "1524830400": 3,
-      "1524832200": 6,
-      "1524834000": 8,
-      "1524835800": 10,
+    {
+      "Name": "M100203",
+      "Temp": [{
+          "Time": 1524830400000,
+          "Temperature": 3
+        },
+        {
+          "Time": 1524832200000,
+          "Temperature": 10
+        },
+        {
+          "Time": 1524834000000,
+          "Temperature": 12
+        },
+        {
+          "Time": 1524835800000,
+          "Temperature": 20
+        },
+      ],
+      "Openings": 10,
+      "Archived": false,
+      "LastUpdated": "1524835800",
     },
-    "Openings": 8,
-    "Archived": false,
-    "LastUpdated": "1524835800",
-  }
-
+    {
+      "Name": "B100001",
+      "Temp": [{
+          "Time": 1524830400000,
+          "Temperature": 0
+        },
+        {
+          "Time": 1524832200000,
+          "Temperature": 2
+        },
+        {
+          "Time": 1524834000000,
+          "Temperature": 5
+        },
+        {
+          "Time": 1524835800000,
+          "Temperature": 6
+        },
+      ],
+      "Openings": 1,
+      "Archived": false,
+      "LastUpdated": "1524835800",
+    }
+  ]
 }

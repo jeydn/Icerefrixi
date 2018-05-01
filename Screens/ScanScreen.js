@@ -9,6 +9,13 @@ class ScanScreen extends React.Component {
   onSuccess(e) {
     this.props.navigation.navigate('Details', {boxId: e.data});
   //  this.scanner.reactivate();
+
+    //TODO: Fix problem that camera is active in the background
+  //  setInterval(() => { this.scanner.reactivate() }, 5000);
+  }
+
+  componentWillUpdate() {
+    this.scanner.reactivate();
   }
 
   render() {
