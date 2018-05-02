@@ -2,7 +2,7 @@ import createReducer from "./createReducer";
 import * as types from "../actions/types";
 /*
 const initialState = {
-  "Boxes": [
+  "boxes": [
     {
       "Name" : null,
       "Temp" : [],
@@ -17,8 +17,8 @@ const boxes = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ITEM:
     return Object.assign({}, state, {
-      Boxes: [
-        ...state.Boxes,
+      boxes: [
+        ...state.boxes,
         {
           "Name" : action.Name,
           "Temp" : action.Temp,
@@ -31,7 +31,7 @@ const boxes = (state = initialState, action) => {
 
     case GET_ITEM:
     return Object.assign({}, state, {
-      Boxes: state.Boxes.map((box, boxId) => {
+      boxes: state.boxes.map((box, boxId) => {
         if (box.Name === boxId) {
           return Object.assign({}, box, {})
         }
@@ -41,7 +41,7 @@ const boxes = (state = initialState, action) => {
 
     case ARCHIVE_ITEM:
     return Object.assign({}, state, {
-      Boxes: state.Boxes.map((box, boxId) => {
+      boxes: state.boxes.map((box, boxId) => {
         if (box.Name === boxId) {
           return Object.assign({}, box, {
             Archived: true //Set archived to true
@@ -57,12 +57,12 @@ const boxes = (state = initialState, action) => {
 }
 
 */
-export const list = createReducer([], {
+export const boxes = createReducer([], {
 
     [types.ADD_ITEM](state, action) {
       return [...state, {
-          Boxes: [
-            ...state.Boxes,
+          boxes: [
+            ...state.boxes,
             {
               "Name" : action.Name,
               "Temp" : action.Temp,
@@ -77,7 +77,7 @@ export const list = createReducer([], {
 
     [types.GET_ITEM](state, action) {
       return [...state, {
-          Boxes: state.Boxes.map((box, boxId) => {
+          boxes: state.boxes.map((box, boxId) => {
             if (box.Name === boxId) {
               return Object.assign({}, box, {})
             }
@@ -89,7 +89,7 @@ export const list = createReducer([], {
 
     [types.ARCHIVE_ITEM](state, action) {
       return [...state, {
-          Boxes: state.Boxes.map((box, boxId) => {
+          boxes: state.boxes.map((box, boxId) => {
             if (box.Name === boxId) {
               return Object.assign({}, box, {
                 Archived: true //Set archived to true

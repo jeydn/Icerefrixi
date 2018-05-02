@@ -2,13 +2,14 @@
 import React, {Component} from "react";
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
+
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {ActionCreators} from "../actions/index";
 
 class BoxesScreen extends Component {
     props: {
-        list: []
+        boxes: []
     };
 
     constructor(props) {
@@ -24,7 +25,7 @@ class BoxesScreen extends Component {
         return (
             <View style={styles.container}>
                 <FlatList
-                    data={this.props.list.map(i => {
+                    data={this.props.boxes.map(i => {
                         return {key: i.color, ...i}
                     })}
                     renderItem={this.renderItem}

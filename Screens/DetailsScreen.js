@@ -6,7 +6,6 @@ import Data from '../ressources/Data.json';
 
 import { connect } from 'react-redux';
 
-
 const noBoxSelected = "No box selected";
 
 class DetailsScreen extends Component {
@@ -34,26 +33,8 @@ class DetailsScreen extends Component {
       let data;
       let BreakException = {};
 
-      const boxes = Data.Boxes;
-    /*  var BreakException = {};
+      const boxes = Data.boxes;
 
-      try {
-        [1, 2, 3].forEach(function(el) {
-          console.log(el);
-          if (el === 2) throw BreakException;
-        });
-      } catch (e) {
-        if (e !== BreakException) throw e;
-      }
-
-
-      if(obj.Name === boxId){
-        alert(obj.Name + " = "+ JSON.stringify(obj));
-        data = obj;
-      }
-
-      Data.Boxes.forEach(obj => alert(JSON.stringify(obj)));
-*/
       try{
         boxes.forEach((obj,boxId) => {
             if(obj.Name === boxId){
@@ -80,76 +61,8 @@ class DetailsScreen extends Component {
     this.setBoxParams(boxId);
   }
 
-
-  /*
-componentWillMount() {
-  const { params } = this.props.navigation.state;
-  const boxId =  params ? params.boxId : noBoxSelected;
-
-  this.setBoxParams(boxId);
-}
-
-
-  componentWillMount() {
-    /*alert(JSON.stringify(this.props.navigation));
-
-    if(this.props.navigation.params){
-      alert(JSON.stringify(this.props.navigation.params[0].boxId));
-      aler("I bims");
-      this.setBoxParams(this.props.navigation.params[0].boxId);
-    }else{
-      //TODO: Just for devlopment
-     this.setState({boxId:"S100033", data:Data.Boxes[0].Temp, boxOpenings:Data.Boxes[0].Openings});
-   }
-     if(this.props.navigation.params){
-     alert(JSON.stringify(this.props.navigation.params));
-     this.setBoxParams(this.props.navigation.params["boxId"]);
-   }
-  }
-
-  componentWillUpdate() {
-    alert(JSON.stringify(this.props.navigation.params));
-  //  alert(JSON.stringify(this.props.navigation.params.boxId));
-    this.setBoxParams(this.props.navigation.params);
-  }
-
-  formatDate(timestamp){
-      const date = new Date(timestamp);
-      let minutes =  date.getMinutes();
-      if(minutes === 0){
-        minutes = "00";
-      }
-
-      return date.getHours() + ":" + minutes;
-  }
-
-  }
-
-  static navigatorStyle = {
-      tabBarHidden: true,
-    };
-
-  this.props.navigator.setStyle({ navigation }) => {
-    const { params } = navigation.state;
-
-    return {
-      tabBarHidden: params.boxId ? true : false,
-    }
-  };
-
-  this.props.navigator.setStyle({
-    tabBarHidden: true
-  });
-
-  <VictoryLine data={this.state.data}/>
-
-  */
-
   render() {
-  /*  const { params } = this.props.navigation.state;
-    const boxId =  params ? params.boxId : noBoxSelected;
-    this.setBoxParams(boxId);
-*/
+
     return (
       <View style={styles.container}>
         <View style={styles.infoView}>

@@ -1,5 +1,5 @@
-import * as listReducer from "./list";
+import * as boxesReducer from "./boxes";
 
 export {
-    listReducer
+    boxesReducer
 };
