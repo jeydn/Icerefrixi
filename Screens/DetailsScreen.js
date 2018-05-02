@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, Button } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { VictoryScatter, VictoryChart, VictoryTheme, VictoryLine, VictoryAxis } from "victory-native";
 import Data from '../ressources/Data.json';
@@ -11,15 +11,20 @@ import {ActionCreators} from "../actions/index";
 const noBoxSelected = "No box selected";
 
 class DetailsScreen extends Component {
+  props: {
+    archiveItem: () => {},
+  }
   constructor(props) {
     super(props);
 
     this.state = {
       boxId: null,
       data: null,
+      btnDisabled: false,
     };
 
     this.setBoxParams = this.setBoxParams.bind(this);
+    this.onPressArchive = this.onPressArchive.bind(this);
   }
 
   //Title includes name of box
@@ -45,7 +50,7 @@ class DetailsScreen extends Component {
         })
     }catch(e){
       if(e === BreakException){
-        this.setState({boxId:boxId, data:data});
+        this.setState({boxId:boxId, data:data, btnDisabled:data.Archived});
       }
     }
   }
@@ -61,6 +66,19 @@ class DetailsScreen extends Component {
 
     this.setBoxParams(boxId);
   }
+/*
+  static getDerivedStateFromProps(nextProps, prevState){
+    const { params } = nextProps.navigation.state;
+    var boxId =  params ? params.boxId : noBoxSelected;
+
+    prevState.setBoxParams(boxId);
+  }
+*/
+  onPressArchive(){
+    this.props.navigation.navigate('Boxes');
+    this.props.archiveItem(this.state.boxId);
+    this.setBoxParams(this.state.boxId);
+  }
 
   formatDate(timestamp){
     const date = new Date(timestamp);
@@ -73,7 +91,15 @@ class DetailsScreen extends Component {
  }
 
   render() {
-
+/*
+<View style={styles.container}>
+  <Button
+     title='Archive this box'
+     onPress={this.onPressArchive}
+     disabled={this.state.BtnDisabled}
+   />
+</View>
+*/
     return (
       <View style={styles.container}>
         <View style={styles.infoView}>
@@ -103,6 +129,16 @@ class DetailsScreen extends Component {
             <Text style={styles.badgeText}>{this.state.data.Openings}</Text>
           </Badge>
         </View>
+
+        <View style={styles.container}>
+          <Button
+             color="#2E4761"
+             title='Archive this box'
+             onPress={this.onPressArchive}
+             disabled={this.state.btnDisabled}
+           />
+        </View>
+
      </View>
     );
   }
@@ -140,7 +176,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: "#EFEFF4",
     width: Dimensions.get('window').width,
-  },
+  }
 });
 
 function mapStateToProps(state) {

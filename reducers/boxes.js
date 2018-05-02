@@ -6,7 +6,7 @@ export const boxes = createReducer([], {
     [types.ADD_ITEM](state, action) {
       return [...state, {
           boxes: [
-            ...state.boxes,
+            ...state,
             {
               "Name" : action.Name,
               "Temp" : action.Temp,
@@ -20,8 +20,7 @@ export const boxes = createReducer([], {
     },
 
     [types.ARCHIVE_ITEM](state, action) {
-      return [...state, {
-          boxes: state.boxes.map((box) => {
+      return state.map((box) => {
             if (box.Name === action.boxId) {
               return Object.assign({}, box, {
                 Archived: true //Set archived to true
@@ -29,8 +28,6 @@ export const boxes = createReducer([], {
             }
             return box
           })
-        }
-      ]
     }
 
 });

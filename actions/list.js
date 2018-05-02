@@ -7,9 +7,9 @@ export function addItem(item){
   }
 }
 
-export function archiveItem(index){
+export function archiveItem(boxId){
   return {
     type: types.ARCHIVE_ITEM,
-    index
+    boxId
   }
 }
