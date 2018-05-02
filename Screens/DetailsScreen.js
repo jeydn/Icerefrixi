@@ -4,17 +4,19 @@ import { Badge } from 'react-native-elements';
 import { VictoryScatter, VictoryChart, VictoryTheme, VictoryLine, VictoryAxis } from "victory-native";
 import Data from '../ressources/Data.json';
 
-import { connect } from 'react-redux';
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {ActionCreators} from "../actions/index";
 
 const noBoxSelected = "No box selected";
 
 class DetailsScreen extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       boxId: null,
       data: null,
-      boxOpenings: null
     };
 
     this.setBoxParams = this.setBoxParams.bind(this);
@@ -30,24 +32,22 @@ class DetailsScreen extends Component {
   };
 
   setBoxParams(boxId){
-      let data;
-      let BreakException = {};
+    let data = null;
+    const BreakException = {};
 
-      const boxes = Data.boxes;
-
-      try{
-        boxes.forEach((obj,boxId) => {
-            if(obj.Name === boxId){
-            data = obj;
+    try{
+      this.props.boxes.forEach((box) => {
+          if (box.Name === boxId) {
+            data = Object.assign({}, box, {});
             throw BreakException;
           }
-        });
-      }catch (e){
-        //Do nothing
+          //return box
+        })
+    }catch(e){
+      if(e === BreakException){
+        this.setState({boxId:boxId, data:data});
       }
-
-
-      this.setState({boxId:boxId, data:data.Temp, boxOpenings:data.Openings});
+    }
   }
 
   componentWillMount() {
@@ -58,8 +58,19 @@ class DetailsScreen extends Component {
     if(boxId === noBoxSelected){
       boxId = "S100033"
     }
+
     this.setBoxParams(boxId);
   }
+
+  formatDate(timestamp){
+    const date = new Date(timestamp);
+    let minutes =  date.getMinutes();
+    if(minutes === 0){
+      minutes = "00";
+    }
+
+    return date.getHours() + ":" + minutes;
+ }
 
   render() {
 
@@ -76,7 +87,7 @@ class DetailsScreen extends Component {
               data: { stroke: "#2E4761" },
               parent: { border: "1px solid #ccc"}
             }}
-            data={this.state.data}
+            data={this.state.data.Temp}
             x="Time"
             y="Temperature"
           />
@@ -89,7 +100,7 @@ class DetailsScreen extends Component {
         <View style={styles.infoViewBadge}>
           <Text style={styles.infoText}>Box openings</Text>
           <Badge containerStyle={{ backgroundColor: '#2E4761', marginRight: 32}}>
-            <Text style={styles.badgeText}>{this.state.boxOpenings}</Text>
+            <Text style={styles.badgeText}>{this.state.data.Openings}</Text>
           </Badge>
         </View>
      </View>
@@ -132,4 +143,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DetailsScreen;
+function mapStateToProps(state) {
+    return {
+        boxes: state.boxes,
+    }
+}
+function mapDispatchToPros(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
+export default connect(mapStateToProps, mapDispatchToPros)(DetailsScreen);

@@ -1,16 +1,13 @@
 
 import React, {Component} from "react";
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-
+import {ListItem} from "react-native-elements";
 
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {ActionCreators} from "../actions/index";
 
 class BoxesScreen extends Component {
-    props: {
-        boxes: []
-    };
 
     constructor(props) {
         super(props);
@@ -20,34 +17,56 @@ class BoxesScreen extends Component {
       title: 'Box List',
     }
 
+    /*
+    <FlatList
+        data={this.props.boxes.map(obj => {
+            return {key: obj.Name, ...obj}
+        })}
+        renderItem={this.renderItem}
+    />
+
+    `$"Box last updated: " ${item.LastUpdated}`
+    */
+
+    formatDate(timestamp){
+      const date = new Date(timestamp);
+      let minutes =  date.getMinutes();
+      if(minutes === 0){
+        minutes = "00";
+      }
+
+      return date.getHours() + ":" + minutes;
+   }
+   
     render() {
 
         return (
             <View style={styles.container}>
-                <FlatList
-                    data={this.props.boxes.map(i => {
-                        return {key: i.color, ...i}
-                    })}
-                    renderItem={this.renderItem}
-                />
+              <FlatList
+                 data={this.props.boxes.map(obj => {
+                     return {key: obj.Name, ...obj}
+                 })}
+                 renderItem={this.renderItem}
+                 keyExtractor={item => item.Name}
+               />
+
             </View>
         );
     }
 
     renderItem({item}) {
-        return (
-            <View style={styles.listItem}>
-                <Text style={{width: 80}}>{item.key}</Text>
-                <View style={[styles.colorPreview, {backgroundColor: item.color}]}/>
-            </View>
-        )
-    }
+      return (
+          <ListItem
+            title={item.Name}
+            subtitle={`Box last updated: ${item.LastUpdated}`}
+          />
+      )
+  }
 }
 
 const styles = StyleSheet.create({
 
     container: {
-
         flex: 1,
         paddingTop: 5
     },
@@ -60,11 +79,6 @@ const styles = StyleSheet.create({
         elevation: 2,
         alignItems: "center",
         padding: 5
-    },
-
-    colorPreview: {
-        height: 20,
-        width: 20,
     }
 });
 
