@@ -5,11 +5,13 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 class ScanScreen extends React.Component {
   constructor(props) {
     super(props);
-
+/*
     this.state = {
-      scanner: null,
-      BtnDisabled: true
+    //  scanner: null,
+      BtnDisabled: true,
+  //    reactivate: false
     };
+*/
   }
 
   static navigationOptions = {
@@ -18,14 +20,30 @@ class ScanScreen extends React.Component {
 
   onSuccess(e) {
     this.props.navigation.navigate('Details', {boxId: e.data});
-    this.setState({scanner: this.scanner, BtnDisabled: false});
+  //  this.setState({BtnDisabled: false, reactivate: !this.state.reactivate});
+  /*  alert(this.scanner);
+    alert(JSON.stringify(this.scanner));
+    this.setState({scanner: this.scanner, BtnDisabled: false});*/
   //  this.scanner.reactivate();
   }
-
+/*
   onPressReactivate() {
+    alert(JSON.stringify(this.state.scanner));
     this.state.scanner.reactivate();
   }
 
+componentWillUpdate(){
+  this.scanner.reactivate();
+}
+bottomContent={
+  <Button
+     color="#2E4761"
+     title='Reactivate the scanner'
+     onPress={this.onPressReactivate}
+     disabled={this.state.BtnDisabled}
+   />
+}
+*/
   render() {
     return (
       <QRCodeScanner
@@ -36,14 +54,8 @@ class ScanScreen extends React.Component {
             Please scan QR code of the box.
           </Text>
         }
-        bottomContent={
-          <Button
-             color="#2E4761"
-             title='Reactivate the scanner'
-             onPress={this.onPressReactivate}
-             disabled={this.state.BtnDisabled}
-           />
-       }
+        reactivate={true}
+        reactivateTimeout={1000}
       />
     );
   }

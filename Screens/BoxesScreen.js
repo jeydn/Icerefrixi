@@ -41,21 +41,27 @@ class BoxesScreen extends Component {
               <View style={styles.infoView}>
                 <Text style={styles.infoText}>Recently scanned boxes</Text>
               </View>
-              <FlatList
-                 data={this.props.boxes.map(obj => {
-                     return {key: obj.Id, ...obj}
-                 })}
-                 renderItem={this.renderItem}
-                 keyExtractor={item => item.Id}
-               />
+
+                <FlatList
+                   style={styles.listView}
+                   data={this.props.boxes.filter(box => {
+                     if (box.Archived === false) {
+                       return {key: box.Id, ...box}
+                     }
+                   })}
+                   renderItem={this.renderItem}
+                   keyExtractor={item => item.Id}
+                 />
 
                <View style={styles.infoView}>
                  <Text style={styles.infoText}>Archived boxes</Text>
                </View>
                <FlatList
-                  data={this.props.boxes.map(obj => {
-                      return {key: obj.Id, ...obj}
-                  })}
+                 data={this.props.boxes.filter(box => {
+                   if (box.Archived !== false) {
+                     return {key: box.Id, ...box}
+                   }
+                 })}
                   renderItem={this.renderItem}
                   keyExtractor={item => item.Id}
                 />
@@ -67,7 +73,6 @@ class BoxesScreen extends Component {
     renderItem({item}) {
       return (
           <ListItem
-            topDivider={true}
             title={item.Name}
             subtitle={`Box ID: ${item.Id}`}
             onPress={() => this.props.navigation.navigate('Details', {boxId: item.Id})}
@@ -79,32 +84,32 @@ class BoxesScreen extends Component {
 const styles = StyleSheet.create({
 
     container: {
-        flex: 1,
-        paddingTop: 5
+      flex: 1,
+      backgroundColor: "#FFFFFF"
     },
 
     listItem: {
-        height: 35,
         flexDirection: "row",
-        backgroundColor: "white",
+        backgroundColor: "#FFFFFF",
         marginBottom: 5,
         elevation: 2,
         alignItems: "center",
         padding: 5
     },
     infoView: {
-      flex: 2,
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: "#EFEFF4",
       width: Dimensions.get('window').width,
     },
     infoText: {
-      flex: 1,
       fontSize: 18,
-      padding: 32,
+      padding: 20,
       color: '#777'
-    }
+    },
+    listView: {
+    //  backgroundColor: "#777",
+    },
 });
 
 function mapStateToProps(state) {

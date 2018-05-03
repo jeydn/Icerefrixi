@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Dimensions, Button, ScrollView, ImageBackground
 import { Badge } from 'react-native-elements';
 import { VictoryScatter, VictoryChart, VictoryTheme, VictoryLine, VictoryAxis, VictoryLabel } from "victory-native";
 import Data from '../ressources/Data.json';
-import PicStyro from '../ressources/styrobox.jpg';
+import Pic from '../ressources/ESP.jpg';
 
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -51,11 +51,12 @@ class DetailsScreen extends Component {
         })
     }catch(e){
       if(e === BreakException){
-        this.setState({boxId:boxId, data:data, btnDisabled:data.Archived});
+        return {boxId:boxId, data:data, btnDisabled:data.Archived};
+        //this.setState({boxId:boxId, data:data, btnDisabled:data.Archived});
       }
     }
   }
-
+/*
   componentWillMount() {
     const { params } = this.props.navigation.state;
     var boxId =  params ? params.boxId : noBoxSelected;
@@ -67,13 +68,36 @@ class DetailsScreen extends Component {
 
     this.setBoxParams(boxId);
   }
-/*
+*/
   static getDerivedStateFromProps(nextProps, prevState){
     const { params } = nextProps.navigation.state;
     var boxId =  params ? params.boxId : noBoxSelected;
-    prevState.setBoxParams(boxId);
+
+    //TODO: ONLY FOR DEVELOPMENT! HAS TO BE DELETED
+    if(boxId === noBoxSelected){
+      boxId = "S100033"
+    }
+
+    let data = null;
+    const BreakException = {};
+
+    try{
+      nextProps.boxes.forEach((box) => {
+          if (box.Id === boxId) {
+            data = Object.assign({}, box, {});
+            throw BreakException;
+          }
+          //return box
+        })
+    }catch(e){
+      if(e === BreakException){
+        return {boxId:boxId, data:data, btnDisabled:data.Archived};
+        //this.setState({boxId:boxId, data:data, btnDisabled:data.Archived});
+      }
+    }
+  //  this.setBoxParams(boxId);
   }
-*/
+
   onPressArchive(){
     this.props.navigation.navigate('Boxes');
     this.props.archiveItem(this.state.boxId);
@@ -99,7 +123,7 @@ class DetailsScreen extends Component {
     return (
       <ScrollView>
         <View style={styles.container}>
-          <ImageBackground source={PicStyro} style={styles.image}>
+          <ImageBackground source={Pic} style={styles.image}>
             <Text style={styles.infoTextBold}>{this.state.data.Name}</Text>
           </ImageBackground>
 
@@ -107,6 +131,7 @@ class DetailsScreen extends Component {
             <Text style={styles.aboutTitleText}>About the box</Text>
             <Text style={styles.aboutText}>Id: {this.state.data.Id}</Text>
             <Text style={styles.aboutText}>Last updated: {this.formatUpdatedDate(this.state.data.LastUpdated)}</Text>
+            <Text style={styles.aboutText}>Description: {this.state.data.Description}</Text>
           </View>
 
           <View style={styles.infoView}>

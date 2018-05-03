@@ -1,7 +1,8 @@
 {
   "boxes": [{
       "Id": "S100033",
-      "Name": "ESP Box Small",
+      "Name": "Shelton’s Cod Box",
+      "Description": "Hello I'm Shelton and I caught a cod today.",
       "Temp": [{
           "Time": 1524830400000,
           "Temperature": 3
@@ -25,7 +26,8 @@
     },
     {
       "Id": "M100203",
-      "Name": "ESP Box Medium",
+      "Name": "Rabia’s Salmon Box",
+      "Description": "Hello I'm Rabia and I caught two salmons today.",
       "Temp": [{
           "Time": 1524830400000,
           "Temperature": 3
@@ -49,7 +51,8 @@
     },
     {
       "Id": "B100001",
-      "Name": "ESP Box Big",
+      "Name": "Magnús’ Shark Box",
+      "Description": "Hello I'm Magnús and I caught a shark today.",
       "Temp": [{
           "Time": 1524830400000,
           "Temperature": 0
