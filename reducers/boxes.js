@@ -8,6 +8,7 @@ export const boxes = createReducer([], {
           boxes: [
             ...state,
             {
+              "Id" : action.Id,
               "Name" : action.Name,
               "Temp" : action.Temp,
               "Openings": action.Openings,
@@ -21,7 +22,7 @@ export const boxes = createReducer([], {
 
     [types.ARCHIVE_ITEM](state, action) {
       return state.map((box) => {
-            if (box.Name === action.boxId) {
+            if (box.Id === action.boxId) {
               return Object.assign({}, box, {
                 Archived: true //Set archived to true
               })

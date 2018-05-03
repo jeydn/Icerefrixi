@@ -1,6 +1,7 @@
 {
   "boxes": [{
-      "Name": "S100033",
+      "Id": "S100033",
+      "Name": "ESP Box Small",
       "Temp": [{
           "Time": 1524830400000,
           "Temperature": 3
@@ -20,10 +21,11 @@
       ],
       "Openings": 3,
       "Archived": false,
-      "LastUpdated": "1524835800",
+      "LastUpdated": "1524830400000",
     },
     {
-      "Name": "M100203",
+      "Id": "M100203",
+      "Name": "ESP Box Medium",
       "Temp": [{
           "Time": 1524830400000,
           "Temperature": 3
@@ -43,10 +45,11 @@
       ],
       "Openings": 10,
       "Archived": false,
-      "LastUpdated": "1524835800",
+      "LastUpdated": "1524830400000",
     },
     {
-      "Name": "B100001",
+      "Id": "B100001",
+      "Name": "ESP Box Big",
       "Temp": [{
           "Time": 1524830400000,
           "Temperature": 0
@@ -66,7 +69,7 @@
       ],
       "Openings": 1,
       "Archived": false,
-      "LastUpdated": "1524835800",
+      "LastUpdated": "1524830400000",
     }
   ]
 }

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Dimensions, Button } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, Button, ScrollView, ImageBackground } from 'react-native';
 import { Badge } from 'react-native-elements';
-import { VictoryScatter, VictoryChart, VictoryTheme, VictoryLine, VictoryAxis } from "victory-native";
+import { VictoryScatter, VictoryChart, VictoryTheme, VictoryLine, VictoryAxis, VictoryLabel } from "victory-native";
 import Data from '../ressources/Data.json';
+import PicStyro from '../ressources/styrobox.jpg';
 
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -42,7 +43,7 @@ class DetailsScreen extends Component {
 
     try{
       this.props.boxes.forEach((box) => {
-          if (box.Name === boxId) {
+          if (box.Id === boxId) {
             data = Object.assign({}, box, {});
             throw BreakException;
           }
@@ -70,7 +71,6 @@ class DetailsScreen extends Component {
   static getDerivedStateFromProps(nextProps, prevState){
     const { params } = nextProps.navigation.state;
     var boxId =  params ? params.boxId : noBoxSelected;
-
     prevState.setBoxParams(boxId);
   }
 */
@@ -90,56 +90,75 @@ class DetailsScreen extends Component {
     return date.getHours() + ":" + minutes;
  }
 
+ formatUpdatedDate(timestamp){
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString()
+ }
+
   render() {
-/*
-<View style={styles.container}>
-  <Button
-     title='Archive this box'
-     onPress={this.onPressArchive}
-     disabled={this.state.BtnDisabled}
-   />
-</View>
-*/
     return (
-      <View style={styles.container}>
-        <View style={styles.infoView}>
-          <Text style={styles.infoText}>Temperature inside the box</Text>
-        </View>
-
-        <VictoryChart theme={VictoryTheme.material}>
-          <VictoryLine
-            interpolation="natural"
-            style={{
-              data: { stroke: "#2E4761" },
-              parent: { border: "1px solid #ccc"}
-            }}
-            data={this.state.data.Temp}
-            x="Time"
-            y="Temperature"
-          />
-          <VictoryAxis
-              tickFormat={(x) => this.formatDate(x)}
-            />
-        <VictoryAxis dependentAxis />
-        </VictoryChart>
-
-        <View style={styles.infoViewBadge}>
-          <Text style={styles.infoText}>Box openings</Text>
-          <Badge containerStyle={{ backgroundColor: '#2E4761', marginRight: 32}}>
-            <Text style={styles.badgeText}>{this.state.data.Openings}</Text>
-          </Badge>
-        </View>
-
+      <ScrollView>
         <View style={styles.container}>
-          <Button
-             color="#2E4761"
-             title='Archive this box'
-             onPress={this.onPressArchive}
-             disabled={this.state.btnDisabled}
-           />
-        </View>
+          <ImageBackground source={PicStyro} style={styles.image}>
+            <Text style={styles.infoTextBold}>{this.state.data.Name}</Text>
+          </ImageBackground>
 
-     </View>
+          <View style={styles.aboutView}>
+            <Text style={styles.aboutTitleText}>About the box</Text>
+            <Text style={styles.aboutText}>Id: {this.state.data.Id}</Text>
+            <Text style={styles.aboutText}>Last updated: {this.formatUpdatedDate(this.state.data.LastUpdated)}</Text>
+          </View>
+
+          <View style={styles.infoView}>
+            <Text style={styles.infoText}>Temperature inside the box</Text>
+          </View>
+
+          <VictoryChart theme={VictoryTheme.material}>
+            <VictoryLine
+              interpolation="natural"
+              style={{
+                data: { stroke: "#2E4761" },
+                parent: { border: "1px solid #ccc"}
+              }}
+              data={this.state.data.Temp}
+              x="Time"
+              y="Temperature"
+            />
+            <VictoryAxis
+                tickFormat={(x) => this.formatDate(x)}
+                label="dddddd"
+                axisLabelComponent={
+                  <VictoryLabel
+                      dy={20}
+                      text="Time"/>}
+              />
+          <VictoryAxis dependentAxis
+            label="dddddd"
+            axisLabelComponent={
+              <VictoryLabel
+                  dy={-27}
+                  text="Temperature"/>}
+            />
+          </VictoryChart>
+
+          <View style={styles.infoViewBadge}>
+            <Text style={styles.infoText}>Box openings</Text>
+            <Badge containerStyle={{ backgroundColor: '#2E4761', marginRight: 15}}>
+              <Text style={styles.badgeText}>{this.state.data.Openings}</Text>
+            </Badge>
+          </View>
+
+          <View style={styles.container}>
+            <Button
+               style={styles.btnStyle}
+               color="#2E4761"
+               title='Archive this box'
+               onPress={this.onPressArchive}
+               disabled={this.state.btnDisabled}
+             />
+          </View>
+        </View>
+     </ScrollView>
     );
   }
 }
@@ -152,22 +171,59 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF"
   },
   infoView: {
-    flex: 2,
+    flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: "#EFEFF4",
     width: Dimensions.get('window').width,
   },
-  infoText: {
-    flex: 1,
+  aboutView: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    backgroundColor: "#2E4761",
+    width: Dimensions.get('window').width,
+    padding: 20
+  },
+  btnStyle: {
+    flex: 3,
     fontSize: 18,
-    padding: 32,
+    padding: 20,
     color: '#777'
   },
-  badgeText: {
-    fontSize: 25,
+  infoText: {
+    flex: 3,
+    fontSize: 18,
+    padding: 20,
+    color: '#777'
+  },
+  infoTextBold: {
+    fontWeight: 'bold',
+    flex: 3,
+    fontSize: 18,
+    padding: 20,
+    color: '#777'
+  },
+  aboutText: {
+    fontSize: 15,
     color: '#FFFFFF',
-    padding: 15,
+    paddingTop: 0,
+    paddingLeft: 20,
+    padding: 7,
+    backgroundColor: "#2E4761",
+  },
+  aboutTitleText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    paddingLeft: 20,
+    paddingBottom: 7,
+    color: '#FFFFFF',
+    backgroundColor: "#2E4761",
+  },
+  badgeText: {
+    fontWeight: 'bold',
+    fontSize: 22,
+    color: '#FFFFFF',
+    padding: 10,
   },
   infoViewBadge: {
     flex: 2,
@@ -176,6 +232,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: "#EFEFF4",
     width: Dimensions.get('window').width,
+  },
+  image:{
+    width: Dimensions.get('window').width,
+    flex:1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20
+
   }
 });
 

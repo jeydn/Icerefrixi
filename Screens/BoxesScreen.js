@@ -31,7 +31,7 @@ class BoxesScreen extends Component {
    }
 
    onPressListItem({item}) {
-     this.props.navigation.navigate('Details', {boxId: item.Name});
+     this.props.navigation.navigate('Details', {boxId: item.Id});
    }
 
     render() {
@@ -43,10 +43,10 @@ class BoxesScreen extends Component {
               </View>
               <FlatList
                  data={this.props.boxes.map(obj => {
-                     return {key: obj.Name, ...obj}
+                     return {key: obj.Id, ...obj}
                  })}
                  renderItem={this.renderItem}
-                 keyExtractor={item => item.Name}
+                 keyExtractor={item => item.Id}
                />
 
                <View style={styles.infoView}>
@@ -54,10 +54,10 @@ class BoxesScreen extends Component {
                </View>
                <FlatList
                   data={this.props.boxes.map(obj => {
-                      return {key: obj.Name, ...obj}
+                      return {key: obj.Id, ...obj}
                   })}
                   renderItem={this.renderItem}
-                  keyExtractor={item => item.Name}
+                  keyExtractor={item => item.Id}
                 />
 
             </View>
@@ -67,10 +67,10 @@ class BoxesScreen extends Component {
     renderItem({item}) {
       return (
           <ListItem
-            topDivider="true"
+            topDivider={true}
             title={item.Name}
-            subtitle={`Box last updated: ${item.LastUpdated}`}
-            onPress={() => this.props.navigation.navigate('Details', {boxId: item.Name})}
+            subtitle={`Box ID: ${item.Id}`}
+            onPress={() => this.props.navigation.navigate('Details', {boxId: item.Id})}
           />
       )
   }
