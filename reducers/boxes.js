@@ -4,20 +4,17 @@ import * as types from "../actions/types";
 export const boxes = createReducer([], {
 
     [types.ADD_ITEM](state, action) {
-      return [...state, {
-          boxes: [
-            ...state,
+      return [...state,
             {
-              "Id" : action.Id,
-              "Name" : action.Name,
-              "Temp" : action.Temp,
-              "Openings": action.Openings,
-              "Archived": action.Archived,
+              "Id" : action.item.Id,
+              "Name" : action.item.Name,
+              "Description" : action.item.Description,
+              "Temp" : action.item.Temp,
+              "Openings": action.item.Openings,
+              "Archived": action.item.Archived,
               "LastUpdated": new Date().getTime() //actual timestamp
             }
           ]
-        }
-      ]
     },
 
     [types.ARCHIVE_ITEM](state, action) {
@@ -29,6 +26,10 @@ export const boxes = createReducer([], {
             }
             return box
           })
+    },
+
+    [types.DELETE_ALL_ITEMS](state, action) {
+      return Object.assign({}, {})
     }
 
 });

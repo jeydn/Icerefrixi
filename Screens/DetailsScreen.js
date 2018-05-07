@@ -4,6 +4,7 @@ import { Badge } from 'react-native-elements';
 import { VictoryScatter, VictoryChart, VictoryTheme, VictoryLine, VictoryAxis, VictoryLabel } from "victory-native";
 import Data from '../ressources/Data.json';
 import Pic from '../ressources/ESP.jpg';
+import { Icon } from 'react-native-elements';
 
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -51,49 +52,37 @@ class DetailsScreen extends Component {
         })
     }catch(e){
       if(e === BreakException){
-        return {boxId:boxId, data:data, btnDisabled:data.Archived};
+        return {boxId:boxId, data:data, btnDisabled:data.Archived };
         //this.setState({boxId:boxId, data:data, btnDisabled:data.Archived});
       }
     }
   }
-/*
-  componentWillMount() {
-    const { params } = this.props.navigation.state;
-    var boxId =  params ? params.boxId : noBoxSelected;
 
-    //TODO: ONLY FOR DEVELOPMENT! HAS TO BE DELETED
-    if(boxId === noBoxSelected){
-      boxId = "S100033"
-    }
-
-    this.setBoxParams(boxId);
-  }
-*/
   static getDerivedStateFromProps(nextProps, prevState){
     const { params } = nextProps.navigation.state;
     var boxId =  params ? params.boxId : noBoxSelected;
 
     //TODO: ONLY FOR DEVELOPMENT! HAS TO BE DELETED
-    if(boxId === noBoxSelected){
-      boxId = "S100033"
-    }
+    if(boxId !== noBoxSelected){
+      let data = null;
+      const BreakException = {};
 
-    let data = null;
-    const BreakException = {};
-
-    try{
-      nextProps.boxes.forEach((box) => {
-          if (box.Id === boxId) {
-            data = Object.assign({}, box, {});
-            throw BreakException;
-          }
-          //return box
-        })
-    }catch(e){
-      if(e === BreakException){
-        return {boxId:boxId, data:data, btnDisabled:data.Archived};
-        //this.setState({boxId:boxId, data:data, btnDisabled:data.Archived});
+      try{
+        nextProps.boxes.forEach((box) => {
+            if (box.Id === boxId) {
+              data = Object.assign({}, box, {});
+              throw BreakException;
+            }
+            //return box
+          })
+      }catch(e){
+        if(e === BreakException){
+          return {boxId:boxId, data:data, btnDisabled:data.Archived};
+          //this.setState({boxId:boxId, data:data, btnDisabled:data.Archived});
+        }
       }
+    }else{
+      return {boxId:noBoxSelected, data:null, btnDisabled:false};
     }
   //  this.setBoxParams(boxId);
   }
@@ -116,10 +105,10 @@ class DetailsScreen extends Component {
 
  formatUpdatedDate(timestamp){
     const date = new Date(timestamp);
-    return date.toLocaleTimeString()
+    return date.toLocaleDateString()
  }
 
-  render() {
+  renderDetails(){
     return (
       <ScrollView>
         <View style={styles.container}>
@@ -184,11 +173,43 @@ class DetailsScreen extends Component {
           </View>
         </View>
      </ScrollView>
-    );
+   );
+  }
+
+  renderNoBoxSelected(){
+    return (
+      <View style={styles.containerNoBoxSelected}>
+        <Icon name="ios-search"
+              type="ionicon"
+              color='#777'
+              raised
+              onPress={() => this.props.navigation.navigate('Scan')}/>
+        <Text style={styles.infoTextNoBoxSelected}>No box is selected please scan a box or select a box from the list.</Text>
+      </View>
+    )
+  }
+
+  render() {
+    if(this.state.boxId === noBoxSelected){
+      return this.renderNoBoxSelected();
+    }else{
+      return this.renderDetails();
+    }
   }
 }
 
 const styles = StyleSheet.create({
+  containerNoBoxSelected: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  infoTextNoBoxSelected: {
+    fontSize: 18,
+    padding: 20,
+    color: '#777'
+  },
   container: {
     flex: 1,
     justifyContent: "center",

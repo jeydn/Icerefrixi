@@ -7,9 +7,16 @@ export function addItem(item){
   }
 }
 
+
 export function archiveItem(boxId){
   return {
     type: types.ARCHIVE_ITEM,
     boxId
+  }
+}
+
+export function deleteAllItems(){
+  return {
+    type: types.DELETE_ALL_ITEMS
   }
 }
