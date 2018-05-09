@@ -15,6 +15,14 @@ export function archiveItem(boxId){
   }
 }
 
+export function addTemp(boxId, data){
+  return {
+    type: types.ADD_TEMP,
+    boxId,
+    data
+  }
+}
+
 export function deleteAllItems(){
   return {
     type: types.DELETE_ALL_ITEMS

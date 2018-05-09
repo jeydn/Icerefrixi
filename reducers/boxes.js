@@ -8,6 +8,7 @@ export const boxes = createReducer([], {
             {
               "Id" : action.item.Id,
               "Name" : action.item.Name,
+              "UUID" : action.item.UUID,
               "Description" : action.item.Description,
               "Temp" : action.item.Temp,
               "Openings": action.item.Openings,
@@ -22,6 +23,18 @@ export const boxes = createReducer([], {
             if (box.Id === action.boxId) {
               return Object.assign({}, box, {
                 Archived: true //Set archived to true
+              })
+            }
+            return box
+          })
+    },
+
+    [types.ADD_TEMP](state, action) {
+      return state.map((box) => {
+            if (box.Id === action.boxId) {
+              return Object.assign({}, box, {
+                "Temp": [...box.Temp, action.data],
+                "LastUpdated": new Date().getTime() //actual timestamp
               })
             }
             return box

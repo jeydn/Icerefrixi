@@ -2,6 +2,7 @@
   "boxes": [{
       "Id": "S100033",
       "Name": "Shelton’s Cod Box",
+      "UUID": "395C84A0-005C-16E4-3D1F-1DC5033AB517",
       "Description": "Hello I'm Shelton and I caught a cod today.",
       "Temp": [{
           "Time": 1524830400000,
@@ -27,6 +28,7 @@
     {
       "Id": "M100203",
       "Name": "Rabia’s Salmon Box",
+      "UUID": "395C84A0-XXXX-XXXX-XXXX-1DC5033AB517",
       "Description": "Hello I'm Rabia and I caught two salmons today.",
       "Temp": [{
           "Time": 1524830400000,
@@ -52,6 +54,7 @@
     {
       "Id": "B100001",
       "Name": "Magnús’ Shark Box",
+      "UUID": "395C84A0-YYYY-XXXX-XXXX-1DC5033AB517",
       "Description": "Hello I'm Magnús and I caught a shark today.",
       "Temp": [{
           "Time": 1524830400000,
